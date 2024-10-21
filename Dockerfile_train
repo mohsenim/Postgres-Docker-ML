@@ -1,0 +1,9 @@
+FROM python:3.10-slim
+
+RUN pip install pandas xgboost scikit-learn joblib sqlalchemy psycopg2-binary
+
+WORKDIR /app
+COPY train.py train.py 
+
+ENTRYPOINT [ "python", "train.py" ]
+# ENTRYPOINT ["/bin/bash"]

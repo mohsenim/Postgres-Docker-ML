@@ -1,0 +1,38 @@
+services:
+  postgres-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=germany_cars_db
+    volumes:
+      - "./postgres_data:/var/lib/postgresql/data:rw"
+    ports:
+      - "5432:5432"
+  data-ingest:
+    image: data-ingest:latest
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=germany_cars_db
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=postgres-db
+      - DATA_PATH=./data
+    volumes:
+      - "./data:/app/data:rw"
+    depends_on:
+      - postgres-db
+
+  train-model:
+    image: train-model:latest
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=germany_cars_db
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=postgres-db
+    working_dir: /app
+    volumes:
+      - "./artifacts:/app/artifacts:rw"
+    depends_on:
+      - data-ingest
