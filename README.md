@@ -25,7 +25,7 @@ docker network create my-network
 
 We use the official Docker image for Postgres to set up a Postgres server. Here's how you can run the Postgres container:
 
-'''
+```
 docker run -it \
   -e POSTGRES_USER="root" \
   -e POSTGRES_PASSWORD="root" \
@@ -35,7 +35,7 @@ docker run -it \
   --netwrok=my-network \
   --name=postgres-db
   postgres:13
-'''
+```
 
 Postgres uses folder `postgres_data` to save data.
 
